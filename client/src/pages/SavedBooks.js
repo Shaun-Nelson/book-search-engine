@@ -24,11 +24,9 @@ const SavedBooks = () => {
     try {
       const response = await deleteBook(bookId, token);
 
-      if (!response.ok) {
-        throw new Error("something went wrong!");
-      }
+      console.log(response);
 
-      const updatedUser = await response.json();
+      const updatedUser = response.data.removeBook;
       setUserData(updatedUser);
       // upon success, remove book's id from localStorage
       removeBookId(bookId);
