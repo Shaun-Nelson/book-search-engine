@@ -38,6 +38,8 @@ const SignupForm = () => {
         variables: { ...userFormData },
       });
 
+      console.log("LOGIN RESPONSE", response);
+
       if (!response.ok) {
         throw new Error("something went wrong!");
       }
