@@ -1,10 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import {
-  ApolloProvider,
-  ApolloClient,
-  InMemoryCache,
-} from "@apollo/react-hooks";
+import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 import SearchBooks from "./pages/SearchBooks";
 import SavedBooks from "./pages/SavedBooks";
 import Navbar from "./components/Navbar";
