@@ -7,7 +7,6 @@ const resolvers = {
     me: async (parent, { username }) => {
       const userData = await User.findOne({ username: username });
 
-      console.log("USERDATA", userData);
       if (!userData) {
         throw new AuthenticationError("Something went wrong!");
       }
