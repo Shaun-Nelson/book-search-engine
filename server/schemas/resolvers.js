@@ -5,7 +5,13 @@ const { signToken } = require("../utils/auth");
 const resolvers = {
   Query: {
     me: async (parent, { username }) => {
-      const userData = await User.findOne({ username });
+      const userData = await User.findOne({ username: username });
+
+      console.log("USERDATA", userData);
+      if (!userData) {
+        throw new AuthenticationError("Something went wrong!");
+      }
+
       return userData;
     },
   },
@@ -31,12 +37,17 @@ const resolvers = {
       return { token, user };
     },
     saveBook: async (parent, { bookData, username }) => {
-      const updatedUser = await User.findOneAndUpdate(
-        { username: username },
-        { $push: { savedBooks: bookData } },
-        { new: true }
-      );
-      return updatedUser;
+      try {
+        const updatedUser = await User.findOneAndUpdate(
+          { username: username },
+          { $addToSet: { savedBooks: bookData } },
+          { new: true, runValidators: true }
+        );
+        return updatedUser;
+      } catch (err) {
+        console.log(err);
+        return err;
+      }
     },
     removeBook: async (parent, { bookId, username }) => {
       const updatedUser = await User.findOneAndUpdate(
@@ -44,6 +55,11 @@ const resolvers = {
         { $pull: { savedBooks: { bookId: bookId } } },
         { new: true }
       );
+
+      if (!updatedUser) {
+        throw new AuthenticationError("Couldn't find user with this id!");
+      }
+
       return updatedUser;
     },
   },
